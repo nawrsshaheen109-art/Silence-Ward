@@ -1,0 +1,30 @@
+# Visual Studio
+.vs/
+*.VC.db
+
+# Binaries
+Binaries/
+
+# Build
+Build/
+
+# Derived Data
+DerivedDataCache/
+
+# Intermediate
+Intermediate/
+
+# Saved
+Saved/
+
+# Rider
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Logs
+*.log
+
+# Temp
+*.tmp
