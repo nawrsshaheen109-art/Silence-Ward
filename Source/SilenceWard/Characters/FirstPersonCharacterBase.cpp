@@ -9,6 +9,8 @@
 #include "InputAction.h"
 #include "InputActionValue.h"
 #include "InputMappingContext.h"
+#include "../Audio/ConcreteFootstepSynth.h"
+#include "../Interaction/InteractableInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/Interface.h"
 #include "UObject/SoftObjectPath.h"
@@ -41,6 +43,7 @@ AFirstPersonCharacterBase::AFirstPersonCharacterBase()
 void AFirstPersonCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	SilenceWard::ConcreteFootsteps::Begin(*this);
 
 	if (UCharacterMovementComponent* MovementComponent = GetCharacterMovement())
 	{
@@ -83,6 +86,12 @@ void AFirstPersonCharacterBase::BeginPlay()
 		MappingContext,
 		MappingContextPriority,
 		FModifyContextOptions());
+}
+
+void AFirstPersonCharacterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	SilenceWard::ConcreteFootsteps::End(*this);
+	Super::EndPlay(EndPlayReason);
 }
 
 void AFirstPersonCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -221,8 +230,19 @@ void AFirstPersonCharacterBase::InteractWithOverlappingActor()
 
 	for (AActor* OverlappingActor : OverlappingActors)
 	{
-		if (!IsValid(OverlappingActor)
-			|| !OverlappingActor->GetClass()->ImplementsInterface(InterfaceClass))
+		if (!IsValid(OverlappingActor))
+		{
+			continue;
+		}
+
+		if (OverlappingActor->GetClass()->ImplementsInterface(
+			UInteractableInterface::StaticClass()))
+		{
+			IInteractableInterface::Execute_PerformInteraction(OverlappingActor);
+			break;
+		}
+
+		if (!OverlappingActor->GetClass()->ImplementsInterface(InterfaceClass))
 		{
 			continue;
 		}

@@ -21,7 +21,7 @@ class SILENCEWARD_API AFirstPersonCharacterBase : public ACharacter
 public:
 	AFirstPersonCharacterBase();
 
-	/** Invokes BPI_interact on the first valid overlapping implementer. */
+	/** Invokes the first overlapping native or legacy interactable. */
 	UFUNCTION(BlueprintCallable, Category = "Interaction", meta = (DisplayName = "Interact With Overlapping Actor (Native)"))
 	void InteractWithOverlappingActor();
 
@@ -35,6 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 	/** Blueprint-only interface used by the project's existing interactables. */

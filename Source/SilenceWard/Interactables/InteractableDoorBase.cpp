@@ -9,6 +9,11 @@ AInteractableDoorBase::AInteractableDoorBase()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
+void AInteractableDoorBase::PerformInteraction_Implementation()
+{
+	InteractDoor();
+}
+
 void AInteractableDoorBase::BeginPlay()
 {
 	Super::BeginPlay();

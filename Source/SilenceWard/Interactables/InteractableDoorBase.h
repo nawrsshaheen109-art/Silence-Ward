@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../Interaction/InteractableInterface.h"
 #include "InteractableDoorBase.generated.h"
 
 class USceneComponent;
@@ -11,12 +12,14 @@ class USceneComponent;
  * components and Blueprint interface implementations.
  */
 UCLASS(Blueprintable)
-class SILENCEWARD_API AInteractableDoorBase : public AActor
+class SILENCEWARD_API AInteractableDoorBase : public AActor, public IInteractableInterface
 {
 	GENERATED_BODY()
 
 public:
 	AInteractableDoorBase();
+
+	virtual void PerformInteraction_Implementation() override;
 
 	/** Compatibility entry point for BPI_interact::interact. */
 	UFUNCTION(BlueprintCallable, Category = "Door", meta = (DisplayName = "Interact Door (Native)"))
